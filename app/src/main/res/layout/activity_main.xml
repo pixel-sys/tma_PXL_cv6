@@ -15,46 +15,7 @@
         android:orientation="vertical"
         android:clickable="true">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_weight="1">
-
-                <Button
-                    android:id="@+id/button_pridaj"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:text="Pridaj" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_weight="1">
-
-                    <Button
-                        android:id="@+id/button_odober"
-                        android:layout_width="130dp"
-                        android:layout_height="wrap_content"
-
-                        android:text="Odober"
-
-                        tools:layout_editor_absoluteY="26dp" />
-
-            </LinearLayout>
-
-
-        </LinearLayout>
 
 
         <TextView

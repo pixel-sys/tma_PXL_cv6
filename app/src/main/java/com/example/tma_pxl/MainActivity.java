@@ -1,8 +1,13 @@
 package com.example.tma_pxl;
 /*Xaver Zak*/
 
+import android.app.Notification;
+import android.content.ClipData;
 import android.content.Intent;
+import android.media.tv.TvContract;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,7 +18,9 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import java.util.ArrayList;
 
@@ -23,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
     ListView zoznam;
     ArrayAdapter<String> adapter;
 
-    Button button_pridaj;
-    Button button_odober;
 
     ActivityResultLauncher<Intent> activity_luncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -48,15 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
         TextView micro_text = findViewById((R.id.textView_todolist));
         zoznam = (ListView) findViewById(R.id.ListView_nvm);
-        button_pridaj = findViewById(R.id.button_pridaj);
-        button_odober = findViewById(R.id.button_odober);
         adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, toDo_zoznam);
         zoznam.setAdapter(adapter);
 
         Intent intent = new Intent(MainActivity.this, Druha_Aktivita.class);
-
-        button_pridaj.setOnClickListener(view -> activity_luncher.launch(intent));
 
         zoznam.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -70,26 +71,58 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        button_odober.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(selector < 0){
-                    Toast.makeText(MainActivity.this, "Nemas nic oznacene! ",
-                            Toast.LENGTH_SHORT).show();
-                }
-                if (selector > adapter.getCount() ){
-                    Toast.makeText(MainActivity.this, "Chces odstanit mimo rozsah! ",
-                            Toast.LENGTH_SHORT).show();
-                }
-                if (selector >= 0 && selector < adapter.getCount()){
-                    adapter.remove(adapter.getItem(selector));
-                    selector = -1;
-                }
+    }
 
-            }
-        });
-
+    public void onClick_odober(View view) {
+        if(selector < 0){
+            Toast.makeText(MainActivity.this, "Nemas nic oznacene! ",
+                    Toast.LENGTH_SHORT).show();
+        }
+        if (selector > adapter.getCount() ){
+            Toast.makeText(MainActivity.this, "Chces odstanit mimo rozsah! ",
+                    Toast.LENGTH_SHORT).show();
+        }
+        if (selector >= 0 && selector < adapter.getCount()){
+            adapter.remove(adapter.getItem(selector));
+            selector = -1;
+        }
 
     }
+
+/*    volanie metody na vytvorenie hlavneho menu*/
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.otvorit:
+                Toast.makeText(MainActivity.this, "you pressed open" ,
+                        Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.ulozit:
+                NotificationCompat.Builder notification_builder = new NotificationCompat.Builder(
+                        this, TvContract.Channels.COLUMN_CHANNEL_LIST_ID)
+                        .setContentTitle("moja super aplikacia")
+                        .setContentText("you clicked on ulozit")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                return true;
+
+            case R.id.pridat:
+                Intent intent = new Intent(MainActivity.this, Druha_Aktivita.class);
+                activity_luncher.launch(intent);
+                return true;
+
+            case R.id.odobrat:
+                onClick_odober(null);
+                return true;
+
+        }
+        return true;
+    }
+
+
 
 }
