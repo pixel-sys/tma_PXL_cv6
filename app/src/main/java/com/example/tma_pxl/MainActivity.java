@@ -3,10 +3,13 @@ package com.example.tma_pxl;
 
 import android.app.Notification;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.media.tv.TvContract;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +24,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.util.ArrayList;
 
@@ -71,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        registerForContextMenu(zoznam);
     }
 
     public void onClick_odober(View view) {
@@ -103,11 +108,19 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.ulozit:
-                NotificationCompat.Builder notification_builder = new NotificationCompat.Builder(
-                        this, TvContract.Channels.COLUMN_CHANNEL_LIST_ID)
-                        .setContentTitle("moja super aplikacia")
-                        .setContentText("you clicked on ulozit")
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                /*NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL)
+                        *//*.setSmallIcon(R.drawable.notification_icon)*//*
+                        .setContentTitle("My notification")
+                        .setContentText("Hello World!")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        // Set the intent that will fire when the user taps the notification
+                        *//*.setContentIntent(pendingIntent)*//*
+                        .setAutoCancel(true);
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+                // notificationId is a unique int for each notification that you must define
+                notificationManager.notify(5, builder.build());*/
+
                 return true;
 
             case R.id.pridat:
@@ -123,6 +136,28 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.kontextove_menu, menu);
+    }
 
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.odobrat:
+                onClick_odober(null);
+                return true;
+            case R.id.ponechat:
+                selector = -1;
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
 
 }
