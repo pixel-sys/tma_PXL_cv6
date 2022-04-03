@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tma_pxl">
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:allowBackup="true"
@@ -11,10 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tma_PXL">
         <activity
-            android:name="com.example.tma_pxl.Druha_Aktivita"
+            android:name=".Napoveda"
             android:exported="false" />
         <activity
-            android:name="com.example.tma_pxl.MainActivity"
+            android:name=".Druha_Aktivita"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
